@@ -9,7 +9,7 @@ services:
     workspace:
         container_name: anagram_workspace
         restart: always
-        image: mrduong92/anagram-nginx
+        image: framgia/laravel-workspace
         volumes_from:
             - application
         tty: true
@@ -29,7 +29,7 @@ services:
             - data
             - application
         ports:
-            - "8000:80"
+            - "8080:80"
         links:
             - php-fpm
     data:
