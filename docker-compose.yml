@@ -9,7 +9,7 @@ services:
     workspace:
         container_name: anagram_workspace
         restart: always
-        image: framgia/laravel-workspace
+        image: mrduong92/laravel-workspace
         volumes_from:
             - application
         tty: true
