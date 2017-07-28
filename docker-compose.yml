@@ -1,0 +1,61 @@
+version: '2'
+
+services:
+    application:
+        container_name: anagram_application
+        image: ubuntu
+        volumes:
+            - ./:/var/www/anagram
+    workspace:
+        container_name: anagram_workspace
+        restart: always
+        image: mrduong92/anagram-nginx
+        volumes_from:
+            - application
+        tty: true
+    php-fpm:
+        container_name: anagram_php-fpm
+        restart: always
+        image: mrduong92/php7fpm
+        volumes_from:
+            - application
+        links:
+            - workspace
+    nginx:
+        container_name: anagram_nginx
+        restart: always
+        image: mrduong92/anagram-nginx
+        volumes_from:
+            - data
+            - application
+        ports:
+            - "8000:80"
+        links:
+            - php-fpm
+    data:
+        container_name: anagram_data
+        image: ubuntu
+        volumes:
+            - .docker/mysql:/var/lib/mysql
+            - .docker/data:/data
+    mysql:
+        container_name: anagram_mysql
+        restart: always
+        image: mysql
+        volumes_from:
+            - data
+        expose:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: homestead
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: root
+    redis:
+        container_name: anagram_redis
+        restart: always
+        image: redis
+        expose:
+            - "6379"
+        volumes_from:
+            - data
