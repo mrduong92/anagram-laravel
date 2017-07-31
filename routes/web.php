@@ -12,5 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('backend.dashboard.index');
+});
+
+Route::group(['namespace' => 'Backend'], function () {
+	Route::get('login', 'AuthController@login');
+	Route::post('logout', 'AuthController@logout');
+
+	// Add Middleware Backend Authentication with Guard 'api'
+	Route::group(['namespace' => 'Backend', 'prefix' => 'backend', 'middleware' => 'backauth'], function () {
+
+	});
+
 });
